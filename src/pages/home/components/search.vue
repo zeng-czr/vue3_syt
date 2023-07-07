@@ -3,14 +3,23 @@ import {ref,onMounted} from 'vue'
 import {Search} from "@element-plus/icons-vue"
 import {getHospitalBykeyApi} from '@/api/home/index.ts'
 // 数据列表
-const keyWord = ref<String>('北京')
+const keyWord = ref('')
 const hosList = ref([])
 // 获取由关键字搜索到的数据列表
-const getHospital = async(key:String)=>{
+const getHospital = async(key:String,cb:any)=>{
+  console.log(key)
+  console.log(cb)
   const res = await getHospitalBykeyApi(key)
+  let showData = res.data.data.map((item) => {
+    return {
+      value: item.hosname, //展示的医院的名字
+      hoscode: item.hoscode, //存储医院的编码
+    };
+  });
   console.log(res)
+  cb(showData)
 } 
-onMounted(()=>getHospital(keyWord))
+// onMounted(()=>getHospital(keyWord.value))
 
 
 </script>
@@ -20,7 +29,7 @@ onMounted(()=>getHospital(keyWord))
     <el-autocomplete
     class="autoInput"
     v-model="keyWord"
-    :fetch-suggestions="querySearchAsync"
+    :fetch-suggestions="getHospital"
     placeholder="点击输入医院名称"
     @select="handleSelect"
   />

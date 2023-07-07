@@ -14,7 +14,7 @@ const pageSize = ref(8)
 const pageNo = ref(1)
 const total = ref(0)
 // 获取列表数据
-const getHospiyal = async()=>{
+const getHospital = async()=>{
   const res = await getHospitaiApi(pageNo.value,pageSize.value)
   // console.log(res)
   hospitalList.value = res.data.data.content
@@ -29,26 +29,26 @@ const getLevel = async()=>{
 // 获取地区列表数据
 const getAddr = async()=>{
   const res = await gethospitalLevelApi('Beijin')
-  console.log(res)
+  // console.log(res)
   addrList.value = res.data.data
 }
 //分页器页码发生变化时候回调
 const currentChange = () => {
-  getHospiyal();
+  getHospital();
 };
 //分页器下拉菜单发生变化的时候会触发
 const sizeChange = () => {
   //当前页码归第一页
   pageNo.value = 1;
   //再次发请求获取医院的数据
-  getHospiyal();
+  getHospital();
 };
 //接收子组件level传的值
 const getLevelData = (value)=>{
   console.log("父组件方法执行")
   console.log(value)
 }
-onMounted(()=>{getHospiyal(),getLevel(),getAddr()})
+onMounted(()=>{getHospital(),getLevel(),getAddr()})
 </script>
 <template>
   <div class="content">
