@@ -1,24 +1,47 @@
+<script setup lang="ts">
+import {ref} from 'vue'
+// 向父组件传递参数
+let $emit = defineEmits(['getLevelData']);
+// 接收父组件传递的参数
+defineProps({
+  levelList:{
+    type: Array,
+    default:()=>[]
+  },
+  addrList:{
+    type: Array,
+    default:()=>[]
+  }
+})
+// level的触发函数
+const activeLevel = ref('')
+const levelTabChange = (value:String)=>{
+  activeLevel.value = value
+  console.log(activeLevel.value)
+  $emit('getLevelData',value);
+}
+// adddr的触发函数
+const activeAddr = ref('')
+const addrTabChange = (value:String)=>{
+  activeAddr.value = value
+  console.log(activeAddr.value)
+}
+</script>
 <template>
   <div class="content">
     <h1 class="title">医院快速查询</h1>
     <div class="level">
-      <div class="title"><span>等级:</span></div>
+      <div class="title " id="levTit"><span>等级:</span></div>
       <ul>
-        <li class="active">全部</li>
-        <li>三级甲等</li>
-        <li>三级甲等</li>
-        <li>三级甲等</li>
-        <li>三级甲等</li>
+        <li :class="{active:activeLevel==''}" @click="levelTabChange('')">全部</li>
+        <li :class="{active:activeLevel==item.value}" v-for="item in levelList" :key="item.id" @click="levelTabChange(item.value)">{{ item.name }}</li>
       </ul>
     </div>
     <div class="addr">
       <div class="title"><span>地区:</span></div>
       <ul>
-        <li class="active">全部</li>
-        <li>海淀区</li>
-        <li>朝阳区</li>
-        <li>金水区</li>
-        <li>二七区</li>
+        <li :class="{active:activeAddr==''}" @click="addrTabChange('')">全部</li>
+        <li :class="{active:activeAddr==item.value}" v-for="item in addrList" :key="item.id" @click="addrTabChange(item.value)">{{ item.name }}</li>
       </ul>
     </div>
   </div>
@@ -28,6 +51,7 @@
     margin: 50px 20px 20px 20px;
     border-bottom: 2px solid #00BFFF;
     .title{
+      width: 100px;
       font-size: 20px;
       padding-left: 10px;
       margin-bottom: 30px;
@@ -35,6 +59,9 @@
     }
     .level{
       display: flex;
+      #levTit{
+        width: 70px;
+      }
       ul{
         display: flex;
         li{
@@ -55,6 +82,7 @@
       ul{
         display: flex;
         cursor: pointer;
+        flex-wrap: wrap;
         li{
           margin: 0 20px;
           &.active{

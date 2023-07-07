@@ -1,20 +1,29 @@
 <script setup lang="ts">
 import {Star,Timer} from "@element-plus/icons-vue"
+
+defineProps(
+  {
+    hospital:{
+      type:Object,
+      default:()=>{}
+    }
+  }
+)
 </script>
 <template>
   <div class="content" >
     <el-card class="item" shadow="hover">
       <div class="itemInfo">
         <div class="info">
-          <h2 class="name">北京人民医院</h2>
+          <h2 class="name">{{ hospital.hosname }}</h2>
           <div class="detail">
-            <text><el-icon :size="20"><Star /></el-icon>三级甲等</text>
-            <text><el-icon :size="20"><Timer /></el-icon>每天八点半放号</text>
+            <text><el-icon :size="20"><Star /></el-icon>{{ hospital.param.hostypeString }}</text>
+            <text><el-icon :size="20"><Timer /></el-icon>每天{{ hospital.bookingRule.releaseTime }}放号</text>
           </div>
           
         </div>
         <div class="img">
-          <img src="../../../assets/images/logo.png"/>
+          <img :src="`data:image/jpeg;base64,${hospital.logoData}`"/>
         </div>
       </div>
     </el-card>
@@ -56,6 +65,7 @@ import {Star,Timer} from "@element-plus/icons-vue"
           img{
             width: 100%;
             height: 100%;
+            border-radius: 50%;
           }
         }
       }

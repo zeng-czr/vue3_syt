@@ -5,3 +5,4 @@ declare module '*.vue' {
   export default componentOptions
 }
 declare module 'element-plus/*'
+declare module '*.ts'
