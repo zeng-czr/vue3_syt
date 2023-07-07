@@ -29,7 +29,7 @@ const addrTabChange = (value:String)=>{
 </script>
 <template>
   <div class="content">
-    <h1 class="title">医院快速查询</h1>
+    <h1 class="Mtitle">医院快速查询</h1>
     <div class="level">
       <div class="title " id="levTit"><span>等级:</span></div>
       <ul>
@@ -50,6 +50,13 @@ const addrTabChange = (value:String)=>{
   .content{
     margin: 50px 20px 20px 20px;
     border-bottom: 2px solid #00BFFF;
+    .Mtitle{
+      width: 200px;
+      font-size: 20px;
+      padding-left: 10px;
+      margin-bottom: 30px;
+      border-left: 2px solid 	#00BFFF;
+    }
     .title{
       width: 100px;
       font-size: 20px;

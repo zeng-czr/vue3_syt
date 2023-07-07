@@ -47,9 +47,7 @@ const getHospital = async(key:String,cb:any)=>{
     padding: 0 10px;
     margin: 0 auto;
     border-bottom: 1px solid 	#DCDCDC;
-    .con{
-        
-    }
+    
     ::v-deep .el-input__wrapper{
       width: 600px;
       border: none;

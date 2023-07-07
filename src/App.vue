@@ -23,11 +23,11 @@ import HospitalBottom from '@/components/hospital_bottom/index.vue'
   align-items: center;
   background-color: 	#F5F5F5;
   overflow-y: hidden;
-    overflow-x: auto;
+  overflow-x: auto;
   .content{
     width: 1200px;
     min-height: 680px;
-    margin-top: 70px;
+    margin-top: 35px;
     background-color:white;
   }
 

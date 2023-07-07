@@ -3,6 +3,7 @@ import {ref,onMounted} from 'vue'
 import Search from "./components/search.vue"
 import Level from "./level/index.vue"
 import Card  from "./card/index.vue"
+import Tip from './tip/index.vue'
 // 导入接口
 import {getHospitaiApi,gethospitalLevelApi} from '@/api/home/index.ts'
 // 数据列表
@@ -87,7 +88,7 @@ onMounted(()=>{getHospital(),getLevel(),getAddr()})
           />
           
         </el-col>
-        <el-col :span="4">456</el-col>
+        <el-col :span="4"><Tip/></el-col>
       </el-row>
     </div>
   </div>
