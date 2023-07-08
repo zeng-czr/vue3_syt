@@ -1,11 +1,24 @@
 <script setup lang="ts">
-import Depart from './components/depart.vue'
+import {ref} from 'vue'
+// import Depart from './components/depart.vue'
 import {Histogram} from '@element-plus/icons-vue'
 import userHospitalStore from '@/store/modules/hospital.ts'
-import {useRoute} from "vue-router"
+
 const hospitalStore = userHospitalStore()
-const route = useRoute()
-console.log(route)
+
+const activeindex= ref('')
+const departChildren = ref([])
+  // 数字转换字符串，防止警告(强迫症，没有也可以)
+const Change=(item:Number)=>{
+  return item.toString()
+}
+  // nav菜单的回调
+const navChange =(index:String)=>{
+  console.log(index);
+  activeindex.value = index
+  departChildren.value = hospitalStore.departmentArr[index]
+  console.log(departChildren.value)
+}
 
 </script>
 <template>
@@ -49,7 +62,29 @@ console.log(route)
       </div>
     </div>
     <div class="detail">
-      <Depart/>
+      <p class="select">科室选择</p>
+      <div class="content" v-if="hospitalStore.departmentArr.length!=0">
+        <div class="leftNav">
+          <el-menu
+            :default-active="activeindex"
+            class="el-menu-vertical-demo"
+            @select="navChange"
+            >
+            <el-menu-item v-for="(depart,i) in hospitalStore.departmentArr" :key="depart.depcode" :index="Change(i)" >
+              <span>{{ depart?.depname }}</span>
+            </el-menu-item>
+          </el-menu>
+        </div>
+        <div class="department">
+          <ul>
+            <li v-for="item in departChildren?.children" :key="item.depcode">{{ item?.depname }}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="noChildren" v-else>
+        暂无科室分类。。。
+      </div>
+      <!-- <Depart :departmentArr = "hospitalStore.departmentArr"/> -->
     </div>
   </div>
 </template>
@@ -107,6 +142,61 @@ console.log(route)
             }
           }
         }
+      }
+    }
+    .detail{
+      .select{
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .content{
+        margin-top: 20px;
+        display: flex;
+        .leftNav{
+          height: 400px;
+          overflow-y: auto;
+          overflow-y: scroll;
+          flex: 2;
+          &::-webkit-scrollbar{
+            width:0!important
+          }
+          .is-active{
+              border-left: 2px solid #87CEFA;
+              border-right: 2px solid #87CEFA;
+            }
+          li{
+            &:hover{
+              background-color: #FFF;
+                color:"#87CEFA";
+                font-size: 20px;
+            }
+          }
+        }
+        .department{
+          flex: 8;
+          height: 400px;
+          overflow-y: auto;
+          &::-webkit-scrollbar{
+            width:0!important
+          }
+          ul{
+            display: flex;
+            flex-wrap: wrap;
+            li{
+              width: 30%;
+              margin: 15px 10px;
+              &:hover{
+                cursor: pointer;
+                color: 	#87CEFA;
+              }
+            }
+          }
+        }
+      }
+      .noChildren{
+        width: 100%;
+        padding-top: 200px;
+        text-align: center;
       }
     }
   }

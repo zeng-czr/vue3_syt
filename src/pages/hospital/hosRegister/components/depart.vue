@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import {ref} from "vue"
-  import userHospitalStore from '@/store/modules/hospital.ts'
-  const hospitalStore = userHospitalStore()
-  const departList = hospitalStore.departmentArr
-  console.log(hospitalStore.departmentArr)
-
-  const activeindex= ref('0')
-  const departChildren = ref(departList[0].children)
+  import {ref,onMounted} from "vue"
+  // import userHospitalStore from '@/store/modules/hospital.ts'
+  // const hospitalStore = userHospitalStore()
+const props = defineProps({
+  departmentArr:{
+    type:Array,
+    default:[]
+  }
+})
+let departList = ref([])
+    departList = props.departmentArr
+  
+  console.log()
+  console.log(`这是子组组件执行+${departList.value}`)
+  const activeindex= ref('')
+  const departChildren = ref([])
   // 数字转换字符串，防止警告(强迫症，没有也可以)
   const Change=(item:Number)=>{
     return item.toString()
@@ -15,12 +23,13 @@ import {ref} from "vue"
   const navChange =(index:String)=>{
     console.log(index);
     activeindex.value = index
-    departChildren.value = departList[index].children
+    departChildren.value = departList[index]
     console.log(departChildren.value)
   }
+  onMounted(()=>navChange('0'))
 </script>
 <template>
-  <div class="content">
+  <div class="content" v-if="departList.length!=0">
     <div class="leftNav">
       <el-menu
         :default-active="activeindex"
@@ -34,9 +43,12 @@ import {ref} from "vue"
     </div>
     <div class="department">
       <ul>
-        <li v-for="item in departChildren" :key="item.depcode">{{ item?.depname }}</li>
+        <li v-for="item in departChildren.children" :key="item.depcode">{{ item?.depname }}</li>
       </ul>
     </div>
+  </div>
+  <div class="noChildren" v-else>
+    暂无科室分类。。。
   </div>
 </template>
 <style lang="scss" scoped>
@@ -83,5 +95,10 @@ import {ref} from "vue"
         }
       }
     }
+  }
+  .noChildren{
+    width: 100%;
+    padding-top: 200px;
+    text-align: center;
   }
 </style>

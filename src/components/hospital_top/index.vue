@@ -5,10 +5,12 @@ const router = useRouter()
 <template>
   <div class="top">
     <div class="content">
-      <div class="left" @click="router.push('/')">
-        <img src="../../assets/images/logo.png">
-        <p>尚医通·预约挂号统一平台</p>
-      </div>
+      <Router-link to="/">
+        <div class="left">
+          <img src="../../assets/images/logo.png">
+          <p>尚医通·预约挂号统一平台</p>
+        </div>
+      </Router-link>
       <div class="right">
         <p class="help">帮助中心</p>
         <p class="login">登陆/注册</p>
@@ -32,6 +34,9 @@ const router = useRouter()
     background-color: white;
     display: flex;
     justify-content: space-between;
+    a{
+      text-decoration: none;
+    }
     .left{
       display: flex;
       justify-content: center;

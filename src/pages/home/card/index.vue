@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import {Star,Timer} from "@element-plus/icons-vue"
 import {useRouter} from "vue-router"
-import userHospitalStore from '@/store/modules/hospital.ts'
-const hospitalStore = userHospitalStore()
 const router = useRouter()
 const props = defineProps(
   {
@@ -20,8 +18,6 @@ const goDetail = ()=>{
       hosCode:props.hospital.hoscode
     }
   })
-  hospitalStore.getHospitalInfo(props.hospital.hoscode)
-  hospitalStore.getDepartmentInfo(props.hospital.hoscode)
 }
 </script>
 <template>

@@ -1,13 +1,26 @@
 <script setup lang="ts">
+import {onMounted} from 'vue'
 import {Sunrise,Sunny,Sunset,Pouring,Cloudy,Ship} from "@element-plus/icons-vue"
 import {useRouter,useRoute} from "vue-router"
+import userHospitalStore from '@/store/modules/hospital.ts'
+const hospitalStore = userHospitalStore()
 const router = useRouter()
 const route = useRoute()
 
 // 菜单切换的回调函数
 const menuChange = (index:String)=>{
-  router.push(index)
+  router.push({
+    path:index,
+    query:{
+      hosCode:route.query.hosCode
+    }
+  })
 }
+onMounted(()=>{
+  console.log('数据持久化执行')
+  hospitalStore.getHospitalInfo(route.query.hosCode)
+  hospitalStore.getDepartmentInfo(route.query.hosCode)
+})
 
 </script>
 <template>
