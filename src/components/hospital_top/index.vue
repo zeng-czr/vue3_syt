@@ -1,7 +1,11 @@
+<script lang="ts" setup>
+import {useRouter} from 'vue-router'
+const router = useRouter()
+</script>
 <template>
   <div class="top">
     <div class="content">
-      <div class="left">
+      <div class="left" @click="router.push('/')">
         <img src="../../assets/images/logo.png">
         <p>尚医通·预约挂号统一平台</p>
       </div>
@@ -32,6 +36,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      cursor: pointer;
       img{
         width: 50px;
         height: 50px;

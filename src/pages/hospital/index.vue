@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import {Sunrise,Sunny,Sunset,Pouring,Cloudy,Ship} from "@element-plus/icons-vue"
+import {useRouter,useRoute} from "vue-router"
+const router = useRouter()
+const route = useRoute()
+
+// 菜单切换的回调函数
+const menuChange = (index:String)=>{
+  router.push(index)
+}
+
 </script>
 <template>
   <div class="hospital">
@@ -11,26 +20,27 @@ import {Sunrise,Sunny,Sunset,Pouring,Cloudy,Ship} from "@element-plus/icons-vue"
       </div>
       <div class="nav">
         <el-menu
-          default-active="2"
+          :default-active="route.path"
           class="el-menu-vertical-demo"
+          @select="menuChange"
         >
-          <el-menu-item index="1">
+          <el-menu-item index="/hospital/hosRegister">
             <el-icon><Sunrise/></el-icon>
             <span>预约挂号</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="/hospital/hosDetail">
             <el-icon><Sunny/></el-icon>
             <span>医院详情</span>
           </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item index="/hospital/hosNotice">
             <el-icon><Sunset/></el-icon>
             <span>预约须知</span>
           </el-menu-item>
-          <el-menu-item index="4">
+          <el-menu-item index="/hospital/hosClose">
             <el-icon><Pouring/></el-icon>
             <span>停诊信息</span>
           </el-menu-item>
-          <el-menu-item index="5">
+          <el-menu-item index="/hospital/hosSearch">
             <el-icon><Cloudy/></el-icon>
             <span>查询|取消</span>
           </el-menu-item>
@@ -58,6 +68,9 @@ import {Sunrise,Sunny,Sunset,Pouring,Cloudy,Ship} from "@element-plus/icons-vue"
         background-color: 	#87CEFA;
       }
       .nav{
+        .el-menu{
+          border: none;
+        }
         ul{
           display: flex;
           flex-direction: column;

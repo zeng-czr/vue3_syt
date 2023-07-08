@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import {Star,Timer} from "@element-plus/icons-vue"
-
-defineProps(
+import {useRouter} from "vue-router"
+import userHospitalStore from '@/store/modules/hospital.ts'
+const hospitalStore = userHospitalStore()
+const router = useRouter()
+const props = defineProps(
   {
     hospital:{
       type:Object,
@@ -9,10 +12,21 @@ defineProps(
     }
   }
 )
+const goDetail = ()=>{
+  
+  router.push({
+    path:"/hospital/hosRegister",
+    query:{
+      hosCode:props.hospital.hoscode
+    }
+  })
+  hospitalStore.getHospitalInfo(props.hospital.hoscode)
+  hospitalStore.getDepartmentInfo(props.hospital.hoscode)
+}
 </script>
 <template>
   <div class="content" >
-    <el-card class="item" shadow="hover">
+    <el-card class="item" shadow="hover" @click="goDetail">
       <div class="itemInfo">
         <div class="info">
           <h2 class="name">{{ hospital.hosname }}</h2>
@@ -38,6 +52,7 @@ defineProps(
     width: 45%;
     height: 100px;
     .item{
+      cursor: pointer;
       .itemInfo{
         height: 96px;
         display: flex;

@@ -102,6 +102,6 @@ onMounted(()=>{getHospital(),getLevel(),getAddr()})
   }
 }
 ::v-deep .el-pagination{
-  margin: 10px 15px;
+  margin: 10px 40px 10px 15px;
 }
 </style>
