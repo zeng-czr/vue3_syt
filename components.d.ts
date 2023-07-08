@@ -23,6 +23,7 @@ declare module 'vue' {
     ElText: typeof import('element-plus/es')['ElText']
     Hospital_bottom: typeof import('./src/components/hospital_bottom/index.vue')['default']
     Hospital_top: typeof import('./src/components/hospital_top/index.vue')['default']
+    Login: typeof import('./src/components/login/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
