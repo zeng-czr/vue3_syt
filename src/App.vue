@@ -14,6 +14,7 @@ import HospitalBottom from '@/components/hospital_bottom/index.vue'
     <!-- 尾部组件 -->
     <HospitalBottom/>
   </div>
+  <Login/>
 </template>
 
 <style scoped lang="scss">

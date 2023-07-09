@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import {useRouter} from 'vue-router'
+import useUserStore from '@/store/modules/use.ts'
+const userStore = useUserStore()
 const router = useRouter()
+const login = ()=>{
+  userStore.isLogin = true
+}
 </script>
 <template>
   <div class="top">
@@ -13,7 +18,8 @@ const router = useRouter()
       </Router-link>
       <div class="right">
         <p class="help">帮助中心</p>
-        <p class="login">登陆/注册</p>
+        <p class="login" @click="login" v-if="!userStore.userInfo.name">登陆/注册</p>
+        <p class="login" v-else>用户名为:{{ userStore.userInfo.name }}</p>
       </div>
     </div>
   </div>
