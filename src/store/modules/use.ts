@@ -5,7 +5,10 @@ const useUserStore = defineStore('user',{
     return {
       isLogin:false,//登录组件的显示隐藏
       code:'',//验证码
-      userInfo:{}
+      userInfo:{
+        name:'',
+        token:''
+      }
     }
   },
   actions: {
@@ -24,6 +27,9 @@ const useUserStore = defineStore('user',{
       if(res.data.code ==200){
         this.userInfo = res.data.data
       }
+    },
+    logout(){
+      this.userInfo = {name:'',token:''}
     }
   },
   persist:{

@@ -33,6 +33,10 @@ export default createRouter({
         {
           path:'hosSearch',
           component:()=>import('@/pages/hospital/hosSearch/index.vue')
+        },
+        {
+          path:'register_stp1',
+          component:()=>import('@/pages/hospital/hosRegister/register_stp1.vue')
         }
       ]
     }

@@ -6,6 +6,10 @@ const router = useRouter()
 const login = ()=>{
   userStore.isLogin = true
 }
+const logout = ()=>{
+  userStore.logout()
+  router.push('/')
+}
 </script>
 <template>
   <div class="top">
@@ -19,7 +23,19 @@ const login = ()=>{
       <div class="right">
         <p class="help">帮助中心</p>
         <p class="login" @click="login" v-if="!userStore.userInfo.name">登陆/注册</p>
-        <p class="login" v-else>用户名为:{{ userStore.userInfo.name }}</p>
+        <p class="login" v-else>
+          <el-dropdown>
+              <p class="loginName">{{ userStore.userInfo.name }}</p>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>实名认证</el-dropdown-item>
+                <el-dropdown-item>挂号订单</el-dropdown-item>
+                <el-dropdown-item>就诊人管理</el-dropdown-item>
+                <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </p>
       </div>
     </div>
   </div>
@@ -73,6 +89,11 @@ const login = ()=>{
         }
       }
       .login{
+        .loginName{
+          font-size: 16px;
+          font-weight: 530;
+          color: black;
+        }
         &:hover{
           color: #ADD8E6;
           cursor: pointer;

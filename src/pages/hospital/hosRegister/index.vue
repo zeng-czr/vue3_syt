@@ -3,9 +3,10 @@ import {ref} from 'vue'
 // import Depart from './components/depart.vue'
 import {Histogram} from '@element-plus/icons-vue'
 import userHospitalStore from '@/store/modules/hospital.ts'
-
+import {useRouter,useRoute} from 'vue-router'
 const hospitalStore = userHospitalStore()
-
+const router = useRouter()
+const route = useRoute()
 const activeindex= ref('')
 const departChildren = ref([])
   // 数字转换字符串，防止警告(强迫症，没有也可以)
@@ -13,13 +14,21 @@ const Change=(item:Number)=>{
   return item.toString()
 }
   // nav菜单的回调
-const navChange =(index:String)=>{
+const navChange = async (index:String)=>{
   console.log(index);
   activeindex.value = index
   departChildren.value = hospitalStore.departmentArr[index]
   console.log(departChildren.value)
 }
-
+const ksConfirm = (item:any)=>{
+  router.push({
+    path:'/hospital/register_stp1',
+    query:{
+      hosCode:route.query.hosCode,
+      depcode:item.depcode
+    }
+  })
+}
 </script>
 <template>
   <div class="content">
@@ -77,7 +86,7 @@ const navChange =(index:String)=>{
         </div>
         <div class="department">
           <ul>
-            <li v-for="item in departChildren?.children" :key="item.depcode">{{ item?.depname }}</li>
+            <li v-for="item in departChildren?.children" :key="item.depcode" @click="ksConfirm(item)">{{ item?.depname }}</li>
           </ul>
         </div>
       </div>

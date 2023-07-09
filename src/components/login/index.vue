@@ -54,6 +54,12 @@ const login= ()=>{
   userStore.getUserLogin(ruleForm)
   userStore.isLogin = false
 }
+// 关闭dialog对话框清空表单
+const form = ref(null)
+const close = ()=>{
+  Object.assign(ruleForm,{phone:'',code:''})
+  form.value.resetFields()
+}
 </script>
 <template>
   <div class="content">
@@ -61,13 +67,14 @@ const login= ()=>{
       v-model="userStore.isLogin"
       title="用户登录"
       width="750px"
+      @close = "close"
       >
       <el-row>
         <el-col :span="12">
           <div class="loginForm">
             <div class="iphone" v-show="changeMade">
               <el-form
-                ref="ruleFormRef"
+                ref="form"
                 :model="ruleForm"
                 status-icon
                 :rules="rules"
