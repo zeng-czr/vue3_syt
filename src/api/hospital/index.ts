@@ -18,3 +18,8 @@ export const getRegisterApi = (page:Number,limit:number,hoscode:String,depcode:S
     url:`/hosp/hospital/auth/getBookingScheduleRule/${page}/${limit}/${hoscode}/${depcode}`
   })
 }
+export const getScheduleListApi = (hoscode:String,depcode:String,data:String)=>{
+  return instance({
+    url:`/hosp/hospital/auth/findScheduleList/${hoscode}/${depcode}/${data}` 
+  })
+}

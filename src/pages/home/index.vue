@@ -17,7 +17,7 @@ const total = ref(0)
 // 获取列表数据
 const getHospital = async()=>{
   const res = await getHospitaiApi(pageNo.value,pageSize.value)
-  // console.log(res)
+  console.log(res)
   hospitalList.value = res.data.data.content
   total.value = res.data.data.totalElements
 }
