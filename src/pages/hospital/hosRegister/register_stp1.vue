@@ -45,6 +45,17 @@
   const changeWorkData = ()=>{
     getRegister()
   }
+  // 跳转第二部预约挂号
+  const goRegister = (item:any)=>{
+    router.push({
+      path:'/hospital/register_stp2',
+      query:{
+        docId:item.id,
+        hosCode:item.hoscode
+      }
+    })
+    console.log(item)
+  }
   onMounted(()=>getRegister())
 </script>
 <template>
@@ -84,7 +95,7 @@
               <p class="doc_key">{{ item.skill }}</p>
             </div>
             <el-text class="money" type="danger">￥{{ item.amount }}</el-text>
-            <el-button type="primary">剩余{{ item.availableNumber }}</el-button>
+            <el-button type="primary" @click="goRegister(item)">剩余{{ item.availableNumber }}</el-button>
           </div>
         </div>
       </div>
@@ -100,7 +111,7 @@
               <p class="doc_key">{{ item.skill }}</p>
             </div>
             <el-text class="money" type="danger">￥{{ item.amount }}</el-text>
-            <el-button class="btn" type="primary">剩余{{ item.availableNumber }}</el-button>
+            <el-button class="btn" type="primary" @click="goRegister(item)">剩余{{ item.availableNumber }}</el-button>
           </div>
         </div>
       </div>
