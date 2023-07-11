@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {ref,onMounted} from'vue'
-import {getOrderInfoApi,getOrderInfoListApi} from '@/api/order/index.ts'
-
+import {getOrderInfoApi,getOrderInfoListApi ,canalOrderApi} from '@/api/order/index.ts'
+import {ElMessage}  from 'element-plus'
 import {useRoute,useRouter} from 'vue-router'
 const router = useRouter()
 const route = useRoute()
@@ -10,6 +10,8 @@ const orderInfoList = ref([])//订单列表
 const pageNo = ref<Number>(1)
 const pageSize = ref<Number>(10)
 const total = ref(0)
+
+const dialogVisible = ref(false)
 const orderInfo =async()=>{
   const res = await getOrderInfoApi(route.query.orderId)
   console.log(res)
@@ -18,10 +20,29 @@ const orderInfo =async()=>{
 //获取订单列表
 const getOrderInfoList =async()=>{
   const res = await getOrderInfoListApi(pageNo.value,pageSize.value)
-  console.log(res)
   orderInfoList.value = res.data.data.records
   total.value = res.data.data.total
 } 
+const canal = ()=>{
+  dialogVisible.value = true
+}
+// 取消预约
+const canalOrder =async ()=>{
+  dialogVisible.value = false
+  const res = await canalOrderApi(route.query.orderId)
+  console.log(res)
+  if(res.data.data){
+    ElMessage({
+      type: "success",
+      message:"订单取消预约成功"
+    })
+  }else{
+    ElMessage({
+      type: "error",
+      message:"订单取消预约失败"
+    })
+  }
+}
 // 当前页码变化
 const currentChange = (item:Number)=>{
   console.log(item)
@@ -41,7 +62,7 @@ onMounted(()=>{
 </script>
 <template>
   <div class="content" >
-    <el-card shadow="hover" v-if="orderMessage">
+    <el-card shadow="hover" v-show="orderMessage">
       <template #header>
         <div class="card-header">
           <span>挂号订单</span>
@@ -120,10 +141,10 @@ onMounted(()=>{
       </div>
       <div class="btn">
         <el-button type="success">立即支付</el-button>
-        <el-button type="info">取消预约</el-button>
+        <el-button type="info" @click="canal">取消预约</el-button>
       </div>
     </el-card>
-    <div class="orderList" v-else>
+    <div class="orderList" v-show="!orderMessage">
       <h1 class="title">挂号订单</h1>
       <el-table 
       :data="orderInfoList" 
@@ -160,6 +181,22 @@ onMounted(()=>{
       />
     </div>
   </div>
+  <el-dialog
+    class="dialogDiv"
+    v-model="dialogVisible"
+    title="取消预约"
+    width="30%"
+    :before-close="handleClose"
+  >
+    <span>是否确定要取消预约</span><br>
+    <el-text type="warning">一旦取消后就需要重新预约挂号</el-text>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="canalOrder()">确定</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -229,6 +266,12 @@ onMounted(()=>{
         margin: 10px;
         padding-bottom: 10px;
       }
+    }
+  }
+  .dialogDiv{
+    span{
+      display: block;
+      margin:5px 0;
     }
   }
 </style>

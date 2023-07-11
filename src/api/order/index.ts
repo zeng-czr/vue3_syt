@@ -19,3 +19,9 @@ export const getOrderInfoListApi = (page:Number,limit:Number)=>{
     url:`/order/orderInfo/auth/${page}/${limit}`
   })
 }
+// 取消订单
+export const canalOrderApi = (orderId:String)=>{
+  return instance({
+    url:`/order/orderInfo/auth/cancelOrder/${orderId}`
+  })
+}
