@@ -9,8 +9,10 @@ const route = useRoute()
 
 // 菜单切换的回调函数
 const menuChange = (index:String)=>{
+  console.log(route)
   router.push({
-    path:index
+    path:index,
+    query:route.query.orderId
   })
 }
 </script>

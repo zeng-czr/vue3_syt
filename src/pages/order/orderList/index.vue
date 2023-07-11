@@ -1,28 +1,50 @@
 <script lang="ts" setup>
 import {ref,onMounted} from'vue'
-import {getOrderInfoApi} from '@/api/order/index.ts'
+import {getOrderInfoApi,getOrderInfoListApi} from '@/api/order/index.ts'
 
 import {useRoute,useRouter} from 'vue-router'
-import { PatchFlags } from 'element-plus/es/utils';
 const router = useRouter()
 const route = useRoute()
 const orderMessage  = ref({})
-const docInfo = ref({})
+const orderInfoList = ref([])//订单列表
+const pageNo = ref<Number>(1)
+const pageSize = ref<Number>(10)
+const total = ref(0)
 const orderInfo =async()=>{
   const res = await getOrderInfoApi(route.query.orderId)
   console.log(res)
   orderMessage.value = res.data.data
 } 
+//获取订单列表
+const getOrderInfoList =async()=>{
+  const res = await getOrderInfoListApi(pageNo.value,pageSize.value)
+  console.log(res)
+  orderInfoList.value = res.data.data.records
+  total.value = res.data.data.total
+} 
+// 当前页码变化
+const currentChange = (item:Number)=>{
+  console.log(item)
+  pageNo.value = item
+  getOrderInfoList()
+}
+// 每页显示数量变化
+const sizeChange = (item:Number)=>{
+  console.log(item)
+  pageSize.value = item
+  getOrderInfoList()
+}
 onMounted(()=>{
-  orderInfo()
+  orderInfo(),
+  getOrderInfoList()
 })
 </script>
 <template>
-  <div class="content">
-    <el-card shadow="hover">
+  <div class="content" >
+    <el-card shadow="hover" v-if="orderMessage">
       <template #header>
         <div class="card-header">
-          <span>挂号详情</span>
+          <span>挂号订单</span>
         </div>
       </template>
       <div class="status">
@@ -101,6 +123,42 @@ onMounted(()=>{
         <el-button type="info">取消预约</el-button>
       </div>
     </el-card>
+    <div class="orderList" v-else>
+      <h1 class="title">挂号订单</h1>
+      <el-table 
+      :data="orderInfoList" 
+      stripe 
+      :cell-style="{'text-align':'center','height':'45px'}"
+      :header-cell-style="{'text-align':'center','font-weight':'bold','color':'black'}">
+        <el-table-column prop="fetchTime" label="就诊时间" width="160" />
+        <el-table-column prop="hosname" label="医院" width="130" />
+        <el-table-column prop="depname" label="科室" width="150"/>
+        <el-table-column prop="title" label="医生" width="100"/>
+        <el-table-column prop="amount" label="医师服务费" />
+        <el-table-column prop="patientId" label="就诊人" />
+        <el-table-column label="订单状态" width="130">
+          <template #default="scope">
+            <el-tag>{{ scope.row.param.orderStatusString }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="address" label="操作" >
+          <template #default="scope">
+            <el-button type="primary" size="small">详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+      class="padina"
+        v-model:current-page="pageNo"
+        v-model:page-size="pageSize"
+        :page-sizes="[10, 20, 30, 40]"
+        :background="true"
+        layout="prev, pager, next, jumper,->,sizes,total"
+        :total="total"
+        @current-change="currentChange"
+        @size-change="sizeChange"
+      />
+    </div>
   </div>
 </template>
 
@@ -110,7 +168,7 @@ onMounted(()=>{
 
 <style lang="scss" scoped>
   .content{
-    margin: 20px;
+    margin: 10px 20px;
     box-shadow: 0 0 10px 10px #cfcdcd;
     .status{
       display: flex;
@@ -157,7 +215,19 @@ onMounted(()=>{
     .btn{
       text-align: center;
       button{
-        margin: 20px  30px 0 30px;
+        margin: 10px  30px 0 30px;
+      }
+    }
+    .orderList{
+      .title{
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px 10px;
+        padding-top: 20px;
+      }
+      .padina{
+        margin: 10px;
+        padding-bottom: 10px;
       }
     }
   }

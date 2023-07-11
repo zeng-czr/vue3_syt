@@ -13,3 +13,9 @@ export const getOrderInfoApi = (orderId:String)=>{
     url:`/order/orderInfo/auth/getOrderInfo/${orderId}`
   })
 }
+// 获取订单列表
+export const getOrderInfoListApi = (page:Number,limit:Number)=>{
+  return instance({
+    url:`/order/orderInfo/auth/${page}/${limit}`
+  })
+}
