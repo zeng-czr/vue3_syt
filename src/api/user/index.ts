@@ -19,3 +19,10 @@ export const getWxLoginApi = (iphone:String)=>{
     url:`/sms/send${iphone}`
   })
 }
+export const getidentificationApi = (data:any)=>{
+  return instance({
+    url:'/user/auth/userAuah',
+    method: 'POST',
+    data
+  })
+}

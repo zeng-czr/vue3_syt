@@ -3,6 +3,7 @@ import {ref,onMounted} from'vue'
 import {getOrderInfoApi,getOrderInfoListApi ,canalOrderApi} from '@/api/order/index.ts'
 import {ElMessage}  from 'element-plus'
 import {useRoute,useRouter} from 'vue-router'
+import { fa } from 'element-plus/es/locale/index.js';
 const router = useRouter()
 const route = useRoute()
 const orderDetail = ref({})
@@ -14,6 +15,7 @@ const total = ref(0)
 
 const dialogVisible = ref(false)
 const dialogDetail = ref(false)
+const dialogImg = ref(false)
 const orderInfo =async()=>{
   const res = await getOrderInfoApi(route.query.orderId)
   // console.log(res)
@@ -148,7 +150,7 @@ onMounted(()=>{
         </div>
       </div>
       <div class="btn">
-        <el-button type="success">立即支付</el-button>
+        <el-button type="success" @click="dialogImg=true">立即支付</el-button>
         <el-button type="info" @click="canal">取消预约</el-button>
       </div>
     </el-card>
@@ -223,6 +225,16 @@ onMounted(()=>{
       </ul>
       <el-button type="primary" @click="dialogDetail=false">确定</el-button>
     </div>
+  </el-dialog>
+  <el-dialog
+    v-model="dialogImg"
+    title="支付界面"
+    width="30%"
+    >
+    <div class="wxImg">
+      <img src="../../../assets/images/wxCode.jpg" alt="">
+    </div>
+    <el-button type="primary" @click="dialogImg=false">关闭窗口</el-button>
   </el-dialog>
 </template>
 
@@ -309,4 +321,10 @@ onMounted(()=>{
       margin-left: 350px;
     }
   }
+  .wxImg{
+    margin-left: 20px;
+  }
+  button{
+      margin-left: 300px;
+    }
 </style>
