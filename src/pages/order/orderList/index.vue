@@ -5,6 +5,7 @@ import {ElMessage}  from 'element-plus'
 import {useRoute,useRouter} from 'vue-router'
 const router = useRouter()
 const route = useRoute()
+const orderDetail = ref({})
 const orderMessage  = ref({})
 const orderInfoList = ref([])//订单列表
 const pageNo = ref<Number>(1)
@@ -12,9 +13,10 @@ const pageSize = ref<Number>(10)
 const total = ref(0)
 
 const dialogVisible = ref(false)
+const dialogDetail = ref(false)
 const orderInfo =async()=>{
   const res = await getOrderInfoApi(route.query.orderId)
-  console.log(res)
+  // console.log(res)
   orderMessage.value = res.data.data
 } 
 //获取订单列表
@@ -30,7 +32,7 @@ const canal = ()=>{
 const canalOrder =async ()=>{
   dialogVisible.value = false
   const res = await canalOrderApi(route.query.orderId)
-  console.log(res)
+  // console.log(res)
   if(res.data.data){
     ElMessage({
       type: "success",
@@ -43,15 +45,21 @@ const canalOrder =async ()=>{
     })
   }
 }
+// 查看订单详情
+const confirm = (item:any)=>{
+  console.log(item)
+  dialogDetail.value = true
+  orderDetail.value = item
+}
 // 当前页码变化
 const currentChange = (item:Number)=>{
-  console.log(item)
+  // console.log(item)
   pageNo.value = item
   getOrderInfoList()
 }
 // 每页显示数量变化
 const sizeChange = (item:Number)=>{
-  console.log(item)
+  // console.log(item)
   pageSize.value = item
   getOrderInfoList()
 }
@@ -70,7 +78,7 @@ onMounted(()=>{
       </template>
       <div class="status">
         <div>
-          <p><el-tag class="ml-2" type="success">{{ orderMessage.param?.orderStatusString }}</el-tag></p>
+          <p><el-tag class="ml-2" type="success">{{ orderMessage?.param?.orderStatusString }}</el-tag></p>
           <p class="title">就诊人信息： {{ orderMessage?.patientName }}</p>
         </div>
         <div class="appInfo">
@@ -156,15 +164,15 @@ onMounted(()=>{
         <el-table-column prop="depname" label="科室" width="150"/>
         <el-table-column prop="title" label="医生" width="100"/>
         <el-table-column prop="amount" label="医师服务费" />
-        <el-table-column prop="patientId" label="就诊人" />
+        <el-table-column prop="patientName" label="就诊人" />
         <el-table-column label="订单状态" width="130">
           <template #default="scope">
-            <el-tag>{{ scope.row.param.orderStatusString }}</el-tag>
+            <el-tag>{{ scope.row?.param.orderStatusString }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="address" label="操作" >
           <template #default="scope">
-            <el-button type="primary" size="small">详情</el-button>
+            <el-button type="primary" size="small" @click="confirm(scope.row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -186,8 +194,7 @@ onMounted(()=>{
     v-model="dialogVisible"
     title="取消预约"
     width="30%"
-    :before-close="handleClose"
-  >
+    >
     <span>是否确定要取消预约</span><br>
     <el-text type="warning">一旦取消后就需要重新预约挂号</el-text>
     <template #footer>
@@ -196,6 +203,26 @@ onMounted(()=>{
         <el-button type="primary" @click="canalOrder()">确定</el-button>
       </span>
     </template>
+  </el-dialog>
+  <el-dialog
+    v-model="dialogDetail"
+    title="挂号订单详情"
+    width="30%"
+    >
+    <div class="detail">
+      <ul>
+        <li>就诊人信息：{{ orderDetail?.patientName }}</li>
+        <li>订单状态：<el-tag>{{ orderDetail?.param?.orderStatusString }}</el-tag></li>
+        <li>就诊日期：{{ orderDetail?.fetchTime }}</li>
+        <li>就诊医院：{{ orderDetail?.hosname }}</li>
+        <li>就诊科室：{{ orderDetail?.depname }}</li>
+        <li>医生职称：{{ orderDetail?.title }}</li>
+        <li>医师服务费：<el-tag type="danger">{{ orderDetail?.amount }}</el-tag></li>
+        <li>挂号订单：<el-tag type="success">{{ orderDetail?.outTradeNo }}</el-tag></li>
+        <li>挂号时间：{{ orderDetail.createTime }}</li>
+      </ul>
+      <el-button type="primary" @click="dialogDetail=false">确定</el-button>
+    </div>
   </el-dialog>
 </template>
 
@@ -272,6 +299,14 @@ onMounted(()=>{
     span{
       display: block;
       margin:5px 0;
+    }
+  }
+  .detail{
+    li{
+      margin: 10px 0;
+    }
+    button{
+      margin-left: 350px;
     }
   }
 </style>
