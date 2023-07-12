@@ -19,6 +19,7 @@ export const getWxLoginApi = (iphone:String)=>{
     url:`/sms/send${iphone}`
   })
 }
+// 用户认证
 export const getidentificationApi = (data:any)=>{
   return instance({
     url:'/user/auth/userAuah',

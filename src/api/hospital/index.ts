@@ -37,3 +37,26 @@ export const getDocInfoApi = (scheduleId:String)=>{
     url: `/hosp/hospital/getSchedule/${scheduleId}`
   })
 }
+// 删除就诊人信息
+export const deletePatientApi = (patientId:String)=>{
+  return instance({
+    url:`/user/patient/auth/remove/${patientId}`,
+    method: 'DELETE',
+  })
+}
+// 修改就诊人信息
+export const updatePatientApi = (data:any)=>{
+  return instance({
+    url:'/user/patient/auth/update',
+    method: 'PUT',
+    data
+  })
+}
+// 添加就诊人信息
+export const addPatientApi = (data:any)=>{
+  return instance({
+    url:'/user/patient/auth/save',
+    method: 'POST',
+    data
+  })
+}
